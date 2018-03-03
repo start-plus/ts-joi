@@ -1,0 +1,43 @@
+{
+  "name": "ts-joi",
+  "version": "0.0.10",
+  "description": "",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "example1": "ts-node examples/example1.ts | bunyan -o short",
+    "example2": "ts-node examples/example2.ts | bunyan -o short",
+    "example3": "ts-node examples/example3.ts | bunyan -o short",
+    "jest": "jest",
+    "tsc": "tsc -p . --noEmit",
+    "dist":
+      "rm -rf dist && tsc -p . --declaration && cp ./{package.json,README.md} dist/",
+    "dist:publish": "npm run dist && cd dist && npm publish",
+    "lint":
+      "tslint -c tslint.json 'src/**/*.{ts,tsx}' '__tests__/**/*.{ts,tsx}'",
+    "test": "npm run tsc && npm run lint && npm run jest -- --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/start-plus/ts-joi.git"
+  },
+  "author": "Łukasz Sentkiewicz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/start-plus/ts-joi/issues"
+  },
+  "homepage": "https://github.com/start-plus/ts-joi#readme",
+  "devDependencies": {
+    "jest": "^22.2.2",
+    "ts-jest": "^22.0.4",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1"
+  },
+  "dependencies": {
+    "@types/jest": "^22.1.2",
+    "@types/joi": "^13.0.5",
+    "joi": "^13.1.2",
+    "reflect-metadata": "^0.1.12"
+  }
+}
