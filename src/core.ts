@@ -1,12 +1,23 @@
 import 'reflect-metadata';
 import * as Joi from 'joi';
 
-const fieldSchemaKey = Symbol('field');
-const schemaKey = Symbol('schema');
+const fieldSchemaMetaKey = Symbol('field');
+const schemaKeysMetaKey = Symbol('schema-keys');
+const schemaMetaKey = Symbol('schema');
 
-const getBaseSchemaForType = (type: any) => {
+export const getSchemaForType = (type: any) => {
   if (type === String) {
     return Joi.string();
+  }
+  if (type === Number) {
+    return Joi.number();
+  }
+  if (type === Array) {
+    return Joi.array();
+  }
+  const customSchema = Reflect.getMetadata(schemaMetaKey, type);
+  if (customSchema) {
+    return customSchema;
   }
   throw new Error('Not supported type: ' + type);
 };
@@ -18,7 +29,7 @@ export const option = (name: string, params?: any[]) => (
   const classType = target.constructor;
   const getFieldSchema = () => {
     const existing = Reflect.getMetadata(
-      fieldSchemaKey,
+      fieldSchemaMetaKey,
       classType,
       propertyKey,
     );
@@ -27,15 +38,29 @@ export const option = (name: string, params?: any[]) => (
     }
 
     const paramType = Reflect.getMetadata('design:type', target, propertyKey);
-    return getBaseSchemaForType(paramType);
+    return getSchemaForType(paramType);
   };
 
-  const schema = getFieldSchema();
-  if (!schema[name]) {
+  const fieldSchema = getFieldSchema();
+  if (!fieldSchema[name]) {
     throw new Error('Invalid option: ' + name);
   }
-  const keys = Reflect.getMetadata(schemaKey, classType) || {};
-  const newKeys = { ...keys, [propertyKey]: schema(name, ...params) };
+  const keys = Reflect.getMetadata(schemaKeysMetaKey, classType) || {};
+  const newSchema = fieldSchema[name](...(params || []));
+  const newKeys = {
+    ...keys,
+    [propertyKey]: newSchema,
+  };
 
-  Reflect.defineMetadata(schemaKey, newKeys, classType);
+  Reflect.defineMetadata(schemaKeysMetaKey, newKeys, classType);
+  Reflect.defineMetadata(fieldSchemaMetaKey, newSchema, classType, propertyKey);
+  Reflect.defineMetadata(schemaMetaKey, Joi.object().keys(newKeys), classType);
 };
+
+export function getSchema(target: any): Joi.ObjectSchema {
+  const ret = Reflect.getMetadata(schemaMetaKey, target);
+  if (!ret) {
+    throw new Error('No metadata defined for ' + (ret.name || ret));
+  }
+  return ret;
+}

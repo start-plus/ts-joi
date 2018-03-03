@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`array type (custom type) 1`] = `
+Object {
+  "children": Object {
+    "foo": Object {
+      "flags": Object {
+        "presence": "required",
+        "sparse": false,
+      },
+      "items": Array [
+        Object {
+          "children": Object {
+            "id": Object {
+              "flags": Object {
+                "presence": "required",
+              },
+              "invalids": Array [
+                "",
+              ],
+              "type": "string",
+            },
+            "name": Object {
+              "flags": Object {
+                "presence": "required",
+              },
+              "invalids": Array [
+                "",
+              ],
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      ],
+      "type": "array",
+    },
+  },
+  "type": "object",
+}
+`;
+
+exports[`array type (union type) 1`] = `
+Object {
+  "children": Object {
+    "foo": Object {
+      "flags": Object {
+        "presence": "required",
+        "sparse": false,
+      },
+      "items": Array [
+        Object {
+          "invalids": Array [
+            Infinity,
+            -Infinity,
+          ],
+          "type": "number",
+        },
+        Object {
+          "invalids": Array [
+            "",
+          ],
+          "type": "string",
+        },
+      ],
+      "type": "array",
+    },
+  },
+  "type": "object",
+}
+`;
+
+exports[`array type 1`] = `
+Object {
+  "children": Object {
+    "foo": Object {
+      "flags": Object {
+        "presence": "required",
+        "sparse": false,
+      },
+      "items": Array [
+        Object {
+          "invalids": Array [
+            Infinity,
+            -Infinity,
+          ],
+          "type": "number",
+        },
+      ],
+      "type": "array",
+    },
+  },
+  "type": "object",
+}
+`;
+
+exports[`number type 1`] = `
+Object {
+  "children": Object {
+    "foo": Object {
+      "flags": Object {
+        "presence": "required",
+      },
+      "invalids": Array [
+        Infinity,
+        -Infinity,
+      ],
+      "rules": Array [
+        Object {
+          "name": "integer",
+        },
+      ],
+      "type": "number",
+    },
+  },
+  "type": "object",
+}
+`;
+
+exports[`string type 1`] = `
+Object {
+  "children": Object {
+    "bar": Object {
+      "flags": Object {
+        "presence": "optional",
+      },
+      "invalids": Array [
+        "",
+      ],
+      "type": "string",
+    },
+    "foo": Object {
+      "flags": Object {
+        "presence": "required",
+      },
+      "invalids": Array [
+        "",
+      ],
+      "rules": Array [
+        Object {
+          "arg": 10,
+          "name": "max",
+        },
+        Object {
+          "arg": 2,
+          "name": "min",
+        },
+      ],
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

@@ -1,9 +1,4 @@
-import {
-  Reference,
-  ValidationOptions,
-  SchemaLike,
-  ValidationErrorFunction,
-} from 'joi';
+import { ValidationOptions, SchemaLike, ValidationErrorFunction } from 'joi';
 import { option } from './core';
 
 /**
@@ -33,7 +28,7 @@ export const required = () => option('required');
 /**
  * Marks a key as optional which will allow undefined as values. Used to annotate the schema for readability as all keys are optional by default.
  */
-export const optional = () => option('required');
+export const optional = () => option('optional');
 
 /**
  * Marks a key as forbidden which will not allow any value except undefined. Used to explicitly forbid keys.
