@@ -117,6 +117,129 @@ Object {
 }
 `;
 
+exports[`object type (inner with override)  1`] = `
+Object {
+  "children": Object {
+    "options": Object {
+      "children": Object {
+        "bar": Object {
+          "flags": Object {
+            "presence": "required",
+          },
+          "invalids": Array [
+            "",
+          ],
+          "type": "string",
+        },
+        "foo": Object {
+          "flags": Object {
+            "presence": "optional",
+          },
+          "invalids": Array [
+            "",
+          ],
+          "type": "string",
+        },
+      },
+      "dependencies": Array [
+        Object {
+          "key": null,
+          "peers": Array [
+            "foo",
+            "bar",
+          ],
+          "type": "xor",
+        },
+      ],
+      "flags": Object {
+        "presence": "optional",
+      },
+      "type": "object",
+    },
+  },
+  "type": "object",
+}
+`;
+
+exports[`object type (inner)  1`] = `
+Object {
+  "children": Object {
+    "options": Object {
+      "children": Object {
+        "bar": Object {
+          "flags": Object {
+            "presence": "required",
+          },
+          "invalids": Array [
+            "",
+          ],
+          "type": "string",
+        },
+        "foo": Object {
+          "flags": Object {
+            "presence": "optional",
+          },
+          "invalids": Array [
+            "",
+          ],
+          "type": "string",
+        },
+      },
+      "flags": Object {
+        "presence": "optional",
+      },
+      "type": "object",
+    },
+  },
+  "type": "object",
+}
+`;
+
+exports[`object type 1`] = `
+Object {
+  "children": Object {
+    "bar": Object {
+      "flags": Object {
+        "presence": "optional",
+      },
+      "invalids": Array [
+        "",
+      ],
+      "type": "string",
+    },
+    "baz": Object {
+      "flags": Object {
+        "presence": "required",
+      },
+      "invalids": Array [
+        "",
+      ],
+      "type": "string",
+    },
+    "foo": Object {
+      "flags": Object {
+        "presence": "optional",
+      },
+      "invalids": Array [
+        "",
+      ],
+      "type": "string",
+    },
+  },
+  "dependencies": Array [
+    Object {
+      "key": null,
+      "peers": Array [
+        "foo",
+        "bar",
+      ],
+      "type": "xor",
+    },
+  ],
+  "type": "object",
+}
+`;
+
 exports[`string type 1`] = `
 Object {
   "children": Object {

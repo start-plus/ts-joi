@@ -5,8 +5,9 @@ import {
   optional,
   getSchema,
   integer,
+  items,
+  xor,
 } from '../src';
-import { items } from '../src/items';
 
 it('string type', () => {
   class MyType {
@@ -49,7 +50,7 @@ it('array type (union type)', () => {
   expect(getSchema(MyType).describe()).toMatchSnapshot();
 });
 
-it.only('array type (custom type)', () => {
+it('array type (custom type)', () => {
   class Item {
     @required() id: string;
     @required() name: string;
@@ -58,6 +59,43 @@ it.only('array type (custom type)', () => {
     @items(Item)
     @required()
     foo: Item[];
+  }
+  expect(getSchema(MyType).describe()).toMatchSnapshot();
+});
+
+it('object type', () => {
+  @xor('foo', 'bar')
+  class MyType {
+    @optional() foo?: string;
+
+    @optional() bar?: string;
+    @required() baz: string;
+  }
+  expect(getSchema(MyType).describe()).toMatchSnapshot();
+});
+
+it('object type (inner) ', () => {
+  class Options {
+    @optional() foo?: string;
+    @required() bar: string;
+  }
+
+  class MyType {
+    @optional() options?: Options;
+  }
+  expect(getSchema(MyType).describe()).toMatchSnapshot();
+});
+
+it('object type (inner with override) ', () => {
+  class Options {
+    @optional() foo?: string;
+    @required() bar: string;
+  }
+
+  class MyType {
+    @xor('foo', 'bar')
+    @optional()
+    options?: Options;
   }
   expect(getSchema(MyType).describe()).toMatchSnapshot();
 });

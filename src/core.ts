@@ -15,6 +15,9 @@ export const getSchemaForType = (type: any) => {
   if (type === Array) {
     return Joi.array();
   }
+  if (type === Object) {
+    return Joi.object();
+  }
   const customSchema = Reflect.getMetadata(schemaMetaKey, type);
   if (customSchema) {
     return customSchema;
@@ -24,8 +27,26 @@ export const getSchemaForType = (type: any) => {
 
 export const option = (name: string, params?: any[]) => (
   target: any,
-  propertyKey: string,
+  propertyKey?: string,
 ) => {
+  const getClassSchema = () => {
+    return (
+      Reflect.getMetadata(
+        schemaMetaKey,
+        propertyKey == null ? target : target.constructor,
+      ) || Joi.object()
+    );
+  };
+  // class
+  if (propertyKey == null) {
+    const classSchema = getClassSchema();
+    if (!classSchema[name]) {
+      throw new Error('Invalid option: ' + name);
+    }
+    const newClassSchema = classSchema[name](...(params || []));
+    Reflect.defineMetadata(schemaMetaKey, newClassSchema, target);
+    return;
+  }
   const classType = target.constructor;
   const getFieldSchema = () => {
     const existing = Reflect.getMetadata(
@@ -54,7 +75,11 @@ export const option = (name: string, params?: any[]) => (
 
   Reflect.defineMetadata(schemaKeysMetaKey, newKeys, classType);
   Reflect.defineMetadata(fieldSchemaMetaKey, newSchema, classType, propertyKey);
-  Reflect.defineMetadata(schemaMetaKey, Joi.object().keys(newKeys), classType);
+  Reflect.defineMetadata(
+    schemaMetaKey,
+    getClassSchema().keys(newKeys),
+    classType,
+  );
 };
 
 export function getSchema(target: any): Joi.ObjectSchema {
